@@ -1,0 +1,46 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    # 应用名称
+    name: flashApi
+  main:
+    # 支持循环依赖
+    allow-circular-references: true
+  mvc:
+    pathmatch:
+      # 解决引入swagger2与springboot2.6.0之后springmvc冲突的问题
+      matching-strategy: ant_path_matcher
+  servlet:
+    multipart:
+      max-file-size: 150MB
+      max-request-size: 150MB
+
+
+# logback日志-延迟加载
+# 因为logback内要使用spring管理的属性，所以配置在spring初始化之后再加载。
+logging:
+  config: classpath:logback-delayed.xml
+
+swagger:
+  # 是否开启
+  enable: true
+
+# 认证管理
+jwt:
+  # 是否启用认证，默认true，开启
+  enable: true
+  # 加密密钥
+  secret: nOyxGdoPIrqmYDuF
+  # token有效时长 单位秒
+  expire: 3600
+  # header 名称
+  header: Auth
+  # url白名单，多个请求使用因为逗号分隔
+  # swagger相关的请求：/webjars/**,/swagger**/**,/v2/api-docs/**,/csrf,/
+  whiteUrls: /api/webjars/**,/api/swagger**/**,/api/v2/api-docs/**,/api/csrf,/api/
+  # 固定token白名单
+  whiteTokens: oa
